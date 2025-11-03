@@ -17,9 +17,9 @@ from utils.math_package import Transformations, Points, Rotations
 from utils.registration import aruns_method
 
 '''
-Main executing function of file, takes in calibration bodies and frames, and makes predicted C.
+Main executing function of file, takes in calibration bodies and frames, and makes predicted C using Arun's method.
 
-Based off of Professor Taylor's slides
+Note: Arun's method is implemented under registration.py.
 '''
 def calibrate(d, a, c,
               D_frames: list[np.ndarray],
