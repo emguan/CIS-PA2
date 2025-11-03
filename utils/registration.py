@@ -25,9 +25,9 @@ def find_centroids(pts: list[Points]) -> Points:
 Compute the rigid transformation (R, p) that aligns point set A to B
 such that:  b_i ≈ R * a_i + p
 
-Using arun's method: https://jingnanshi.com/blog/arun_method_for_3d_reg.html 
+Using Arun's method: https://jingnanshi.com/blog/arun_method_for_3d_reg.html 
 """
-def rigid_transformation(a: list[Points], b: list[Points]) -> Transformations:
+def aruns_method(a: list[Points], b: list[Points]) -> Transformations:
 
     # initialize A and B for MA = B
     A = np.stack([p.points_3d() for p in a], axis=0)

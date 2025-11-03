@@ -14,7 +14,7 @@ import numpy as np
 from utils.helpers import arr_to_points
 from utils.read_write import read_calbody, read_calreadings, write_expected_C_txt
 from utils.math_package import Transformations, Points, Rotations
-from utils.registration import rigid_transformation
+from utils.registration import aruns_method
 
 '''
 Main executing function of file, takes in calibration bodies and frames, and makes predicted C.
@@ -24,8 +24,32 @@ Based off of Professor Taylor's slides
 def calibrate(d, a, c,
               D_frames: list[np.ndarray],
               A_frames: list[np.ndarray]) :
-o
 
+    ND, NA, NC = d.shape[0], a.shape[0], c.shape[0]
+    C_pred: list[np.ndarray] = []
+
+    for i in range(len(D_frames)):
+        Dk = D_frames[i]
+        Ak = A_frames[i]
+
+        # convert to points for processing
+        d_pts  = arr_to_points(d)
+        Dk_pts = arr_to_points(Dk)
+        a_pts  = arr_to_points(a)
+        Ak_pts = arr_to_points(Ak)
+
+        # Arun's method for Fd
+        Fd: Transformations = aruns_method(d_pts, Dk_pts)
+        Dk_hat = Fd.apply(d)
+
+         # Arun's method for Fa
+        Fa: Transformations = aruns_method(a_pts, Ak_pts)
+
+        # Ck = Fd^{-1} ◦ Fa (c)
+        F_overall: Transformations = Fd.inverse() @ Fa  
+        Ck: np.ndarray = F_overall.apply(c)  
+
+        C_pred.append(Ck)
 
     return C_pred
 
